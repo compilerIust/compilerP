@@ -1,0 +1,971 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <title>compiler_DR.Parsa</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            /*font: 400 15px Lato, sans-serif;*/
+            font-family: 'B Nazanin';
+            line-height: 1.8;
+            /*color: #818181;*/
+            color: purple;
+        }
+
+        h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            color: #303030;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        h4 {
+            font-size: 19px;
+            line-height: 1.375em;
+            color: #303030;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .jumbotron {
+            background-color: #331143;
+            color: #fff;
+            padding: 100px 25px;
+            font-family: Montserrat, sans-serif;
+        }
+
+        .container-fluid {
+            padding: 60px 50px;
+        }
+
+        .bg-grey {
+            background-color: #f6f6f6;
+        }
+
+        .logo-small {
+            color: #f4511e;
+            font-size: 50px;
+        }
+
+        .logo {
+            color: #f4511e;
+            font-size: 200px;
+        }
+
+        .thumbnail {
+            padding: 0 0 15px 0;
+            border: none;
+            border-radius: 0;
+        }
+
+            .thumbnail img {
+                width: 100%;
+                height: 100%;
+                margin-bottom: 10px;
+            }
+
+        .carousel-control.right, .carousel-control.left {
+            background-image: none;
+            color: #f4511e;
+        }
+
+        .carousel-indicators li {
+            border-color: #f4511e;
+        }
+
+            .carousel-indicators li.active {
+                background-color: #f4511e;
+            }
+
+        .item h4 {
+            font-size: 19px;
+            line-height: 1.375em;
+            font-weight: 400;
+            font-style: italic;
+            margin: 70px 0;
+        }
+
+        .item span {
+            font-style: normal;
+        }
+
+        .panel {
+            border: 1px solid #f4511e;
+            border-radius: 0 !important;
+            transition: box-shadow 0.5s;
+        }
+
+            .panel:hover {
+                box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+            }
+
+        .panel-footer .btn:hover {
+            border: 1px solid #f4511e;
+            background-color: #fff !important;
+            color: #f4511e;
+        }
+
+        .panel-heading {
+            color: #fff !important;
+            background-color: purple !important;
+            padding: 25px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        .panel-footer {
+            background-color: white !important;
+        }
+
+            .panel-footer h3 {
+                font-size: 32px;
+            }
+
+            .panel-footer h4 {
+                color: #aaa;
+                font-size: 14px;
+            }
+
+            .panel-footer .btn {
+                margin: 15px 0;
+                background-color: #f4511e;
+                color: #fff;
+            }
+
+        .navbar {
+            margin-bottom: 0;
+            background-color: #331143;
+            z-index: 9999;
+            border: 0;
+            font-size: 12px !important;
+            line-height: 1.42857143 !important;
+            border-radius: 0;
+            font-family: 'B Titr';
+        }
+
+            .navbar li a, .navbar .navbar-brand {
+                width: auto;
+                color: #fff !important;
+            }
+
+        .navbar-nav li a:hover, .navbar-nav li.active a {
+            width: auto;
+            color: #f4511e !important;
+            background-color: #fff !important;
+        }
+
+        .navbar-default .navbar-toggle {
+            border-color: transparent;
+            color: #fff !important;
+        }
+
+        footer .glyphicon {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #f4511e;
+        }
+
+        .slideanim {
+            visibility: hidden;
+        }
+
+        .slide {
+            animation-name: slide;
+            -webkit-animation-name: slide;
+            animation-duration: 1s;
+            -webkit-animation-duration: 1s;
+            visibility: visible;
+        }
+        a{
+            color
+        }
+    </style>
+</head>
+
+
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="#sourc">مراجع</a></li>
+                    <li><a href="#data">جزوه های درسی</a></li>
+                    @*<li><a href="#contact">تهیه کنندگان</a></li>*@
+                    <li><a href="#portfolio">دانشگاه های جهان</a></li>
+                    <li><a href="#services">پروژه های دانشجویی</a></li>
+                    <li><a href="#pricing">دروس</a></li>
+                    <li><a href="#about">معرفی</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron text-center">
+        <img class="img-responsive" src="~/Content/icon/compiler.jpg" />
+        @*<h1>کامپایلر</h1>
+            <p>.....................</p>
+            <form>
+                    <div class="input-group">
+                        <input type="email" class="form-control" size="50" placeholder="Email Address" required>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-danger">Subscribe</button>
+                        </div>
+                    </div>
+                </form>*@
+    </div>
+
+    <!-- Container (About Section) -->
+    <div id="about" class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>معرفی و سرآغاز</h2><br>
+                <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h4><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div class="col-sm-4">
+                <span><img src="~/Content/icon/drparsa.jpg" width="200" height="200" /></span>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="container-fluid bg-grey">
+        <div class="row">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-8">
+                <h2>Our Values</h2><br>
+                <h4><strong>MISSION:</strong> Our mission lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h4><br>
+                <p>
+                    <strong>VISION:</strong> Our vision Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+            </div>
+        </div>
+    </div>*@
+
+    <!-- Container (Pricing Section) -->
+    <div id="pricing" class="container-fluid">
+        <div class="text-center">
+            <h2>دروس</h2>
+            <h4>یک جمله درباره کامپایلر</h4>
+        </div>
+        <div class="row slideanim">
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>مبانی کامپایلر</h1> 
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s9.picofile.com/file/8346662000/Chapter1.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <br />
+                            <a href="http://s9.picofile.com/file/8346661718/Chapter1.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>تحلیلگر لغوی </h1> 
+                    </div>
+                    <div class="panel-body">
+                        <a href="http://s9.picofile.com/file/8346662018/Chapter2.pdf.html" download>
+                            ducument
+                            <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                        </a>
+                        <br />
+                        <a href="http://s8.picofile.com/file/8346661776/Chapter2.ppt.html" download>
+                            presentation
+                            <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                        </a>
+                        <br />
+                        <br />
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+               
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>زبان و گرامر</h1>  
+                    </div>
+
+                    <div class="panel-body">
+                        <a href="http://s8.picofile.com/file/8346662034/Chapter3.pdf.html" download>
+                            ducument
+                            <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                        </a>
+                        <br />
+                        <a href="http://s9.picofile.com/file/8346661792/Chapter3.ppt.html" download>
+                            presentation
+                            <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                        </a>
+                        <br /><br />
+
+                    </div>
+                </div>
+                </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>تجزیه بالا به پایین</h1>  
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s8.picofile.com/file/8346662050/Chapter4.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <br />
+                            <a href="http://s9.picofile.com/file/8346661800/Chapter4.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>
+                            تجزیه پایین به بالا
+                        </h1>                 
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s9.picofile.com/file/8346662076/Chapter5.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <br />
+                            <a href="http://s9.picofile.com/file/8346661826/Chapter5.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>تحلیلگر مفهومی</h1> 
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <br />
+                            <br />
+                            <a href="http://s8.picofile.com/file/8346661842/Chapter6.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>تولید کد </h1>  
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s9.picofile.com/file/8346662084/Chapter7.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <br />
+                            <a href="http://s9.picofile.com/file/8346661942/IL_Generation_step_by_step.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>بهینه سازی کد </h1> 
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s9.picofile.com/file/8346662226/IL.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <a href="http://s8.picofile.com/file/8346661950/IL_to_Execute.ppt.html" download>
+                                presenation1
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <a href="http://s9.picofile.com/file/8346661926/IL_Instructions_and_Stack_Transition.ppt.html" download>
+                                presentation2
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>jusmin and jvm </h1> 
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-body">
+                                <a href="http://s9.picofile.com/file/8346662242/Jasmin.pdf.html" download>
+                                    ducument
+                                    <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                                </a>
+                                <br /> <br /> <br />
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>lex and yacc </h1> 
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-body">
+                                <a href="http://s8.picofile.com/file/8346662268/lex.pdf.html" download>
+                                    ducument1
+                                    <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                                </a>
+                                <br />
+                                <a href="http://s9.picofile.com/file/8346662250/Lex_And_Yacc.pdf.html" download>
+                                    ducument2
+                                    <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                                </a>
+                                <a href="http://s9.picofile.com/file/8346662318/yacc.pdf.html" download>
+                                    ducument3
+                                    <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>مدیریت ثبات ها  </h1>  
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+
+                            <a href="http://s8.picofile.com/file/8346661976/Register_Management.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+
+                            <br />
+
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>درخت خلاصه نحوی </h1> 
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-body">
+                            <a href="http://s9.picofile.com/file/8346661700/AST.ppt.html" download>
+                                presentation
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                            <a href="http://s9.picofile.com/file/8346662300/pAST.pdf.html" download>
+                                ducument
+                                <img src="~/Content/icon/download-from-cloud.png" width="50px" height="50px" />
+                            </a>
+                           
+                            <br />
+
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="text-center">
+            <h2>آزمون ها</h2>
+            <h4>یک جمله درباره کامپایلر</h4>
+        </div>
+        <div class="row slideanim">
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>نمونه سوال شماره 2</h1>
+                    </div>
+                    <div class="panel-body">
+                        <p> <a href="http://s8.picofile.com/file/8346661342/Exam1.pdf.html" download class="btn-block">ducument  </a></p>
+                        <p>  <br /> </p>
+                        <p><br /></p>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>نمونه سوال شماره 2</h1>
+                    </div>
+                    <div class="panel-body">
+                        <p> <a href="http://s8.picofile.com/file/8346661350/Exam2.pdf.html" download class="btn-block">ducument  </a></p>
+                        <p>  <br /> </p>
+                        <p><br /></p>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>سوالات دکتر پارسا</h1>
+                    </div>
+                    <div class="panel-body">
+                        <p> <a href="http://s9.picofile.com/file/8346661368/Parsa_Exams.pdf.html" download class="btn-block">ducument  </a></p>
+                        <p> <br /> </p>
+                        <p><br /></p>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-heading">
+                        <h1>نمونه سوال تستی</h1>
+                    </div>
+                    <div class="panel-body">
+                        <p> <a href="http://s9.picofile.com/file/8346661468/TestExams.pdf.html" download class="btn-block">ducument  </a></p>
+                        <p>  <br /></p>
+                        <p><br /></p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- Container (Services Section) -->
+        <div id="services" class="container-fluid text-center">
+            <h2>پروژه های دانشجوئی</h2>
+            <h4>...</h4>
+            <br>
+
+            <div class="row slideanim">
+                <div class="col-sm-4">
+                    <span><img src="~/Content/icon/icon-compilerProject.png" width="125" height="125" /></span>
+                    <h4>compiler project</h4>
+                    <p> <a href="http://s9.picofile.com/file/8346657576/CompilerProject.zip.html" download class="btn-block">ducument  </a></p>
+
+                    <p>یک جمله توصیفی</p>
+                </div>
+                <div class="col-sm-4">
+                    <span><img src="~/Content/icon/icon-bytecode.png" width="125" height="125" /></span>
+                    <h4>Byte Code Creator</h4>
+                    <p> <a href="http://s8.picofile.com/file/8346657026/Byte_Code_Creator.zip.html" download class="btn-block">ducument  </a></p>
+                    <p>یک جمله توصیفی</p>
+                </div>
+                <div class="col-sm-4">
+                    <span><img src="~/Content/icon/icon-bytecodeg2.png" width="125" height="125" /></span>
+                    <h4>ByteCodeGenerator</h4>
+                    <p> <a href="http://s9.picofile.com/file/8346657500/ByteCodeGenerator.zip.html" download class="btn-block">ducument  </a></p>
+                    <p>یک جمله توصیفی</p>
+                </div>
+            </div>
+            <br><br>
+                <div class="row slideanim">
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-tool.png" width="125" height="125" /></span>
+                        <h4>CSToolsCompiler</h4>
+                        <p> <a href="http://s9.picofile.com/file/8346657676/CSToolsCompiler.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-parser.png" width="125" height="125" /></span>
+                        <h4>GoldParser</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346658976/GoldParser.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon---.jpg" width="125" height="125" /></span>
+                        <h4>HEBB</h4>
+                        <p> <a href="http://s9.picofile.com/file/8346659950/HEBB.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-html.png" width="125" height="125" /></span>
+                        <h4>HTML Compiler</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346660150/HTML_Compiler.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon---.jpg" width="125" height="125" /></span>
+                        <h4>Jacomizer 2.2</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346660368/Jacomizer_2_2.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon---.jpg" width="125" height="125" /></span>
+                        <h4>LEXYN</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346661326/LEXYN.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-jusmin.png" width="125" height="125" /></span>
+                        <h4>Jasmin_Generator</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346660500/Jasmin_Generator.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon---.jpg" width="125" height="125" /></span>
+                        <h4>NACC</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346660892/NACC.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-optimizer.png" width="125" height="125" /></span>
+                        <h4>Optimized LR1</h4>
+                        <p> <a href="http://s8.picofile.com/file/8346661084/Optimized_LR1.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <span><img src="~/Content/icon/icon-tiny.png" width="125" height="125" /></span>
+                        <h4>Tiny Compiler</h4>
+                        <p> <a href="http://s9.picofile.com/file/8346661092/Tiny_Compiler.zip.html" download class="btn-block">ducument  </a></p>
+                        <p>یک جمله توصیفی</p>
+                    </div>
+                </div>
+        </div>
+
+        <!-- Container (Portfolio Section) -->
+        <div id="portfolio" class="container-fluid text-center bg-grey">
+            <h2>دانشگاه های جهان</h2><br>
+            <h4>.......</h4>
+            <div class="row text-center slideanim">
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <img src="~/Content/icon/cambridge.jpg" alt="Cambridge" width="400" height="300">
+                        <p><strong>Cambridge</strong></p>
+                        <p><a href="http://s8.picofile.com/file/8346656184/Cambridge_Compiler_Construction.pdf.html" target="_blank">مشاهده  </a></p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <img src="~/Content/icon/everGreen.jpg" alt="evergreen" width="400" height="300">
+                        <p><strong>evergreen</strong></p>
+                        <p><a href="http://s8.picofile.com/file/8346656276/EverGreen_Compiler_Construction_in_C.pdf.html" target="_blank">مشاهده  </a></p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <img src="~/Content/icon/Hanyang - Copy.jpg" alt="Hanyang" width="400" height="300">
+                        <p><strong>Hanyang</strong></p>
+                        <p><a href="http://s8.picofile.com/file/8346656300/Hanyang_syllabus.pdf.html" target="_blank">مشاهده  </a></p>
+                    </div>
+                </div>
+              
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="~/Content/icon/manitoba.jpg" alt="Manitoba" width="400" height="300">
+                    <p><strong>Manitoba</strong></p>
+                    <p><a href="http://s8.picofile.com/file/8346656342/Manitoba.pdf.html" target="_blank">مشاهده  </a></p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="~/Content/icon/linza.jpg" alt="Linza" width="400" height="300">
+                    <p><strong>Linza</strong></p>
+                    <p><a href="http://s9.picofile.com/file/8346656318/Linza.pdf.html" target="_blank">مشاهده  </a></p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="~/Content/icon/mcmaster.jpg" alt="McMaster" width="400" height="300">
+                    <p><strong>McMaster</strong></p>
+                    <p><a href="http://s9.picofile.com/file/8346656400/MCMaster.pdf.html" target="_blank">مشاهده  </a></p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="~/Content/icon/osnabruck.jpg" alt="OsnaBruck" width="400" height="300">
+                    <p><strong>OsnaBruck</strong></p>
+                    <p><a href="http://s8.picofile.com/file/8346656284/Germany.pdf.html" target="_blank">مشاهده  </a></p>
+                </div>
+            </div>
+           
+            <div class="col-sm-4">
+                <div class="thumbnail">
+                    <img src="~/Content/icon/princeton.jpg" alt="Princeton" width="400" height="300">
+                    <p><strong>Princeton</strong></p>
+                    <p><a href="http://s9.picofile.com/file/8346656434/Princeton.pdf.html" target="_blank">مشاهده  </a></p>
+                </div>
+            </div>
+        </div><br>
+    <div  id="data" class="container-fluid">
+            <h2 style="text-align:center">جزوات درسی کامپایلر</h2>
+            <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active">
+                        
+                    </li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                   
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                       
+                        <h4>  <img src="~/Content/icon/جزوه استاد.png" /><br><span>.جزوه کلاسی دکتر پارسا که نوسط دانشجویان تهیه شده است</span></h4>
+
+                    </div>
+                    <div class="item">
+                       
+                        <h4> <img src="~/Content/icon/تکالیف.png" /><br><span>.مجموعه تکالیف کلاسی دکتر پارسا به همراه حل آنها</span></h4>
+                    </div>
+                   
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+       
+        <div id="sourc" class="container-fluid">
+            <div class="text-center">
+                <h2>منابع</h2>
+                <h4>یک جمله درباره کامپایلر</h4>
+            </div>
+            <div class="row slideanim">
+
+
+
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>تحلیلگر مفهومی</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p> <a href="~/Content/Lessons/Document/Chapter6.pdf" download class="btn-block">ducument  </a></p>
+                            <p> <a href="~/Content/Lessons/Presentation/Chapter6.ppt" download class="btn-block">presentation </a></p>
+                            <p>  <a href="~/Content/Lessons/Document/Chapter6.pdf" target="_blank">مشاهده  </a> </p>
+                            <p><br /></p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>تولید کد</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p> <a href="~/Content/Lessons/Document/Chapter7.pdf" download class="btn-block">ducument  </a></p>
+                            <p> <a href="~/Content/Lessons/Presentation/IL Generation-step by step.ppt" download class="btn-block">presentation </a></p>
+                            <p>  <a href="~/Content/Lessons/Document/Chapter7.pdf" target="_blank">مشاهده  </a> </p>
+                            <p>     <br /> </p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>بهینه سازی کد</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p> <a href="~/Content/Lessons/Document/IL.pdf" download class="btn-block">ducument  </a></p>
+                            <p> <a href="~/Content/Lessons/Document/IL Instructions and Stack Transition.pps" download class="btn-block">ducument  </a></p>
+                            <p> <a href="~/Content/Lessons/Presentation/IL to Execute.pps" download class="btn-block">presentation </a></p>
+                            <p>  <a href="~/Content/Lessons/Document/IL.pdf" target="_blank">مشاهده  </a> </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>jusmin and jvm</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p> <a href="~/Content/Lessons/Document/Jasmin.pdf" download class="btn-block">ducument  </a></p>
+                            <p>  <a href="~/Content/Lessons/Document/Jasmin.pdf" target="_blank">مشاهده  </a> </p>
+                            <p><br /></p>
+                            <p><br /></p>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h1>lex and yacc</h1>
+                        </div>
+                        <div class="panel-body">
+                            <p> <a href="~/Content/Lessons/Document/lex.pdf" download class="btn-block">ducument  </a></p>
+                            <p> <a href="~/Content/Lessons/Presentation/Lex And Yacc.pdf" download class="btn-block">presentation </a></p>
+                            <p>  <a href="~/Content/Lessons/Document/Lex And Yacc.pdf" target="_blank">مشاهده  </a> </p>
+                            <p><br /></p>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+         @*Container (Contact Section) 
+        <div id="contact" class="container-fluid bg-grey">
+            <h2 class="text-center">ta</h2>
+            <div class="row">
+                <div class="col-sm-5">
+                    <p>Iran university of science and technology</p>
+                    <p><span class="glyphicon glyphicon-map-marker"></span> Iran, US</p>
+                    <p><span class="glyphicon glyphicon-phone"></span> +98 1515151515</p>
+                    <p><span class="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
+                </div>
+               <div class="col-sm-7 slideanim">
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                        </div>
+                    </div>
+                    <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <button class="btn btn-default pull-right" type="submit">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+        <footer class="container-fluid text-center">
+            <a href="#myPage" title="To Top">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+            <p> Made By</p>
+            <p>Hanieh Sadat Nojabaie</p>
+           
+        </footer>
+
+
+
+        <script>
+            $(document).ready(function () {
+                // Add smooth scrolling to all links in navbar + footer link
+                $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+                    // Make sure this.hash has a value before overriding default behavior
+                    if (this.hash !== "") {
+                        // Prevent default anchor click behavior
+                        event.preventDefault();
+
+                        // Store hash
+                        var hash = this.hash;
+
+                        // Using jQuery's animate() method to add smooth page scroll
+                        // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                        $('html, body').animate({
+                            scrollTop: $(hash).offset().top
+                        }, 900, function () {
+
+                            // Add hash (#) to URL when done scrolling (default click behavior)
+                            window.location.hash = hash;
+                        });
+                    } // End if
+                });
+
+                $(window).scroll(function () {
+                    $(".slideanim").each(function () {
+                        var pos = $(this).offset().top;
+
+                        var winTop = $(window).scrollTop();
+                        if (pos < winTop + 600) {
+                            $(this).addClass("slide");
+                        }
+                    });
+                });
+            })
+        </script>
+
+</body>
+</html>
